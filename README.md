@@ -10,7 +10,9 @@ The dataset used for this project is sourced from Kaggle and contains detailed i
 # Lets create some graphs to visualize the data!
 Similar to a test I performed in my midterm project, I will look to identify which numerical features have the strongest correlation with quality in the wine dataset and determine the statistical significance of these relationships. I will do this by calculating Pearson correlation coefficients and p-values for all numerical features against the target quality. Then, I will sort them into a DataFrame to rank features based on their correlation strengths.
 
-The resulting table displays the following for each feature: Correlation Coefficient:
+The resulting table displays the following for each feature: 
+
+Correlation Coefficient:
 
 Positive Correlations:
 Alcohol (0.476): This has the strongest positive relationship with quality. Higher alcohol content appears to correlate with better wine quality.
@@ -18,9 +20,13 @@ Sulfates (0.251): Positively correlated with quality as well, though weaker than
 
 Negative Correlations:
 Volatile acidity (-0.390): This test shows a strong negative correlation, meaning higher volatile acidity (essentially a vinegary taste) tends to decrease quality.
+
 Density, Total sulfur dioxide, and Chlorides are also negatively correlated with quality but have relatively low correlations. ps (P-Value):
+
 P-values close to 0, such as 2.831477e-91 for Alcohol, indicate strong statistical significance. The smaller the p-value, the stronger the evidence that the correlation is not due to random chance.
+
 Residual sugar has a very high p-value (0.583), indicating no significant relationship with wine quality. As a result, I will not consider residual sugar moving forward, as it has little effect on perceived wine quality.
+
 
 I will now move into visualizing the relationships between wine quality and some variables that had higher levels of correlation with it.
 
@@ -42,7 +48,7 @@ When compared to the baseline model, which had an MSE of 0.6517, the regression 
 
 A K-Nearest Neighbors (KNN) model should be well-suited for testing multiple variables against wine quality because it captures non-linear relationships and adapts to patterns within the data. By evaluating similarities between wines based on all variables, I hope that my KNN model can effectively integrate multiple predictors without assuming a specific relationship between them. Additionally,optimizing n_neighbors ensures the model balances bias and variance, further improving its accuracy.
 
-Interestingly, after performing my K-Nearest Neighbors Test, the model achieved a training MSE of 0.3701 and a test MSE of 0.4454, slightly underperforming compared to the Linear Regression model (training MSE = 0.385, test MSE = 0.404). From the feature importance analysis table, columns like density, volatile acidity, and sulphates were identfied as the most influential predictors, differing from Linear Regression where alcohol was the dominant predicitive variable. This discrepancy may be due to a KNN test's focus on local relationships within the data, capturing non-linear patterns that would end up emphasizing features like density. In wine, density is closely tied to other important attributes, such as sugar content, alcohol concentration, and fermentation levels. Wines with similar densities might have clustered together due to shared characteristics in these properties, which KNN naturally identified when forming local neighborhoods. Further, according to articles online, KNN might not be suitable for large datasets due to its computational complexity. The results from this test show that model choice can have an interestig affect on how feature importance is interpreted, depending on the data’s structure and relationships.
+Interestingly, after performing my K-Nearest Neighbors Test, the model achieved a training MSE of 0.3701 and a test MSE of 0.4454, slightly underperforming compared to the Linear Regression model (training MSE = 0.385, test MSE = 0.404). From the feature importance analysis table, columns like density, volatile acidity, and sulfates were identified as the most influential predictors, differing from Linear Regression, where alcohol was the dominant predictive variable. This discrepancy may be due to a KNN test's focus on local relationships within the data, capturing non-linear patterns that would end up emphasizing features like density. In wine, density is closely tied to other important attributes, such as sugar content, alcohol concentration, and fermentation levels. Wines with similar densities might have clustered together due to shared characteristics in these properties, which KNN naturally identified when forming local neighborhoods. Further, according to articles online, KNN might not be suitable for large datasets due to its computational complexity. The results from this test show that model choice can have an interesting effect on how feature importance is interpreted, depending on the data’s structure and relationships.
 
 # Decision Tree Regression Model
 
@@ -52,7 +58,7 @@ The Decision Tree Regression Model identified alcohol as the most important feat
 
 # Random Forest Regression Model
 
-I have gone with a A Random Forest Regression Model for my final test. Random Forest Regression Model's are ideal for testing multiple variables against wine quality because it combines the strengths of multiple decision trees to improve its accuracy and reduce overfitting. By averaging predictions from numerous trees, it will be able to capture non-linear relationships and interactions between the features in my dataset. Additionally, these models handle large numbers of variables effectively and reduces bias by using randomized splits, making it well-suited for complex datasets like my own.
+I have gone with a A Random Forest Regression Model for my final test. Random Forest Regression Model's are ideal for testing multiple variables against wine quality because it combines the strengths of multiple decision trees to improve its accuracy and reduce overfitting. By averaging predictions from numerous trees, it will be able to capture non-linear relationships and interactions between the features in my dataset. Additionally, these models handle large numbers of variables effectively and reduce bias by using randomized splits, making them well-suited for complex datasets like my own.
 
 The Random Forest Regression Model achieved strong performance, with a test MSE of 0.349, and a train MSE of 0.049, the lowest among all tested models. Hyperparameter tuning identified 150 estimators and a maximum depth of 30 as the optimal settings, improving the model’s ability to generalize. Interestingly, sulphates and density ranked as the most important features, followed by volatile acidity, while alcohol, previously dominant in Linear Regression and Decision Tree models, ranked much lower. This difference arises because Random Forests reduce overfitting by averaging predictions across multiple decision trees, where other variables with local importance may dilute splits based on alcohol. Additionally, sulfates and density may have stronger non-linear relationships with wine quality, which Random Forests are better at detecting compared to linear or single-tree models.
 
@@ -61,19 +67,29 @@ The Random Forest Regression Model achieved strong performance, with a test MSE 
 Random Forest Regression Performance: The Random Forest Regression Model emerged as the best-performing model, achieving the lowest MSE of 0.349 on the test data, compared to 0.404 for Multiple Linear Regression, 0.445 for KNN, and 0.439 for Decision Tree. Most Influential Features: Across all the models, we saw some variation in the most influential features, with alcohol, density, sulphates, and volatile acidity being featured as the most important predictors of wine quality in different tests.
 
 Model-Specific Insights:
+
 Linear Regression: Alcohol was the most significant predictor due to its strong linear relationship with wine quality.
+
 KNN: Density gained importance as KNN captured non-linear relationships within the data.
+
 Decision Tree: Alcohol remained the top predictor, while the tree structure provided interpretability at the cost of slightly higher MSE.
+
 Random Forest: In the best performing model overall, sulphates and density emerged as the most important features, as Random Forest effectively captured non-linear relationships and feature interactions by averaging predictions across multiple decision trees.
+
 Feature Interactions: The Random Forest model’s results suggest that features like density and sulphates have subtle but crucial interactions with other variables that linear models were simply unable to capture.
+
 Baseline Comparison: All models outperformed the baseline MSE of 0.6517, demonstrating their ability to predict wine quality and emphasizing the importance of different wine properties in influencing wine ratings.
 
 # Next Steps & Potential Improvements:
 
 Incorporate Additional Features:
-I think that introducing external factors like grape variety, region-specific climate data, or production techniques has the potential to improve model performance and make for interesting results.
-Including aspects like sensory descriptions (taste profiles and aroma notes) to provide more context for wine quality scores could also be beneficial.
+
+I think that introducing external factors like grape variety, region-specific climate data, or production techniques has the potential to improve model performance and make for interesting results. Including aspects like sensory descriptions (taste profiles and aroma notes) to provide more context for wine quality scores could also be beneficial.
+
 More Advanced Feature Engineering:
+
 I think that transforming or combining existing features within the dataset, such as creating an alcohol-to-density ratio, to uncover hidden relationships could be interesting in gaining a better understaning of how certain variables in wine interact iwth each other
+
 Cross-Validation and Scaling:
+
 Using some additional cross-validation techniques to ensure robustness and consistency of model results. Doing this could improve models like the K-Nearest Neighbors Regression Model.
